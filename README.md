@@ -23,6 +23,7 @@ A [Dash][dash] visualization of [Feederwatch][feederwatch] data.
 | loc_id     | categorical | Unique identifier for survey site                |
 | latitude   | continuous  | Latitude in decimal degrees for survey site      |
 | longitude  | continuous  | Longitude in decimal degrees for survey site     |
+| region     | categorical | Site region identifier                           |
 | year       | discrete    | Year of first day of two-day observation period  |
 | month      | discrete    | Month of first day of two-day observation period |
 | day        | discrete    | Day of first day of two-day observation period   |
