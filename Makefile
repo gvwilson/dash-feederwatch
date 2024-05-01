@@ -30,6 +30,10 @@ get:
 	wget https://clo-pfw-prod.s3.us-west-2.amazonaws.com/data/202306/${SPECIES}.zip
 	unzip ${SPECIES}.zip
 	mv ${SPECIES}.csv raw
+	wget https://raw.githubusercontent.com/plotly/datasets/master/gapminder2007.csv
+	mv gapminder2007.csv raw
+	wget https://raw.githubusercontent.com/plotly/datasets/master/gapminder_unfiltered.csv
+	mv gapminder_unfiltered.csv raw
 	@touch raw/*.csv
 	@rm -rf *.zip __MACOSX
 
