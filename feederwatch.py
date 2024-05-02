@@ -21,7 +21,7 @@ SELECT_SPECIES = 'species'
 def main(name):
     '''Main driver.'''
     birds, species_labels, regions_labels = load_data()
-    app = Dash(name)
+    app = Dash(name, external_stylesheets=[dbc.themes.BOOTSTRAP])
     define_layout(app, species_labels, regions_labels)
     create_callbacks(birds)
     app.run(debug=True)
