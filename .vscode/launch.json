@@ -2,6 +2,22 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "feeder bootstrap",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "feederwatch.py",
+            "console": "integratedTerminal",
+            "args": ["bootstrap"]
+        },
+        {
+            "name": "feeder mantine",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "feederwatch.py",
+            "console": "integratedTerminal",
+            "args": ["mantine"]
+        },
+        {
             "name": "PyDebug current",
             "type": "debugpy",
             "request": "launch",
