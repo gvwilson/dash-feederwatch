@@ -52,6 +52,11 @@ ${SPECIES_COOKED}: ${SPECIES_RAW} ${SPECIES_CONVERT}
 	@mkdir -p cooked
 	python ${SPECIES_CONVERT} ${SPECIES_RAW} ${SPECIES_COOKED}
 
+## check: check code
+.PHONY: check
+check:
+	ruff check .
+
 ## settings: show variables
 .PHONY: settings
 settings:
