@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "feeder bootstrap",
+            "name": "bootstrap",
             "type": "debugpy",
             "request": "launch",
             "program": "feederwatch.py",
@@ -10,7 +10,15 @@
             "args": ["bootstrap"]
         },
         {
-            "name": "feeder mantine",
+            "name": "ddk",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "feederwatch.py",
+            "console": "integratedTerminal",
+            "args": ["ddk"]
+        },
+        {
+            "name": "mantine",
             "type": "debugpy",
             "request": "launch",
             "program": "feederwatch.py",

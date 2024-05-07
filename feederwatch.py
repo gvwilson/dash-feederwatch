@@ -1,5 +1,6 @@
 from dash import Dash, Input, Output, callback, dash_table, dcc, html, _dash_renderer
 import dash_bootstrap_components as dbc
+import dash_design_kit as ddk
 import dash_mantine_components as dmc
 import pandas as pd
 import plotly.express as px
@@ -11,8 +12,6 @@ DATA_DIR = 'cooked'
 BIRDS_DATA = f'{DATA_DIR}/birds-ca.csv'
 SPECIES_DATA = f'{DATA_DIR}/species-ca.csv'
 REGIONS_DATA = f'{DATA_DIR}/regions-ca.csv'
-WIDTH_LABEL = 1
-WIDTH_DROPDOWN = 4
 COMPONENT_GRAPH = 'graph'
 COMPONENT_TABLE = 'table'
 SELECT_REGION = 'region'
@@ -29,16 +28,9 @@ def main(name):
     species_labels = make_labels(species, 'species_id', 'en_us')
     regions_labels = make_labels(regions, 'region', 'name')
     
-    components = create_components(birds, species_labels, regions_labels)
-    if styling == 'bootstrap':
-        app = Dash(name, external_stylesheets=[dbc.themes.BOOTSTRAP])
-    elif styling == 'mantine':
-        # https://github.com/snehilvj/dash-mantine-components/issues/240
-        _dash_renderer._set_react_version('18.2.0')
-        app = Dash(name)
-    else:
-        assert False, f'unknown layout {layout}'
-    app.layout = layout(components)
+    table_cls = ddk.DataTable if styling == 'ddk' else dash_table.DataTable
+    components = create_components(birds, table_cls, species_labels, regions_labels)
+    app = layout(name, components)
     create_callbacks(birds)
 
     app.run(debug=True)
@@ -62,18 +54,22 @@ def create_callbacks(birds):
         )
 
 
-def create_components(birds, species_labels, regions_labels):
+def create_components(birds, table_cls, species_labels, regions_labels):
     return {
         COMPONENT_GRAPH: dcc.Graph(id=COMPONENT_GRAPH),
-        COMPONENT_TABLE: dash_table.DataTable(page_size=PAGE_SIZE, id=COMPONENT_TABLE),
+        COMPONENT_TABLE: table_cls(page_size=PAGE_SIZE, id=COMPONENT_TABLE),
         SELECT_REGION: dcc.Dropdown(regions_labels, None, id=SELECT_REGION),
         SELECT_SPECIES: dcc.Dropdown(species_labels, None, id=SELECT_SPECIES),
     }
 
-def layout_bootstrap(components):
+
+def layout_bootstrap(name, components):
     '''Organize components using Bootstrap.'''
-    return dbc.Container([
-        dbc.Row(dbc.Col(html.Div(children='FeederWatch with Bootstrap Layout'))),
+    WIDTH_LABEL = 1
+    WIDTH_DROPDOWN = 4
+    app = Dash(name, external_stylesheets=[dbc.themes.BOOTSTRAP])
+    app.layout = dbc.Container([
+        dbc.Row(dbc.Col(html.H1(children='FeederWatch with Bootstrap Layout'))),
         dbc.Row([
             dbc.Col(html.Div('region:'), width=WIDTH_LABEL),
             dbc.Col(components[SELECT_REGION], width=WIDTH_DROPDOWN),
@@ -85,11 +81,48 @@ def layout_bootstrap(components):
         dbc.Row(dbc.Col(components[COMPONENT_TABLE])),
         dbc.Row(dbc.Col(components[COMPONENT_GRAPH])),
     ])
+    return app
 
 
-def layout_mantine(components):
+def layout_ddk(name, components):
+    '''Organize components using Dash Design Kit.'''
+    app = Dash(name)
+    app.layout = ddk.App(show_editor=True, children=[
+        ddk.Header([
+            ddk.Title('FeederWatch with DDK Layout')
+        ]),
+        ddk.ControlCard(
+            orientation='horizontal',
+            label_position='left',
+            children=[
+                ddk.ControlItem(
+                    label='region',
+                    children=[
+                        components[SELECT_REGION]
+                    ]
+                ),
+                ddk.ControlItem(
+                    label='species',
+                    children=[
+                        components[SELECT_SPECIES]
+                    ]
+                ),
+            ],
+        ),
+        ddk.Block(children=[
+            ddk.Card(ddk.ControlItem(components[COMPONENT_TABLE]), width=50),
+            ddk.Card(ddk.ControlItem(components[COMPONENT_GRAPH]), width=50),
+        ]),
+    ])
+    return app
+
+
+def layout_mantine(name, components):
     '''Organize components using Mantine.'''
-    return dmc.MantineProvider(children=[
+    # https://github.com/snehilvj/dash-mantine-components/issues/240
+    _dash_renderer._set_react_version('18.2.0')
+    app = Dash(name)
+    app.layout = dmc.MantineProvider(children=[
         dmc.Title('FeederWatch with Mantine Layout'),
         dmc.Grid(children=[
             dmc.GridCol(html.Div('region:'), span=WIDTH_LABEL),
@@ -102,6 +135,7 @@ def layout_mantine(components):
         dmc.Grid(children=[dmc.GridCol(components[COMPONENT_TABLE])]),
         dmc.Grid(children=[dmc.GridCol(components[COMPONENT_GRAPH])]),
     ])
+    return app
 
 
 def load_data():

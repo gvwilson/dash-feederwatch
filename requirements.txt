@@ -4,3 +4,6 @@ dash-mantine-components
 pandas
 psutil
 ruff
+
+--extra-index-url=https://de5-staging.plotly.host/packages
+dash-design-kit
