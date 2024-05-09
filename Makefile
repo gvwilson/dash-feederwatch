@@ -37,12 +37,13 @@ get:
 	@touch raw/*.csv
 	@rm -rf *.zip __MACOSX
 
-## data: re-build data files
-data: ${DB}
-
+## db: rebuild SQLite database (not needed)
 ${DB}: ${BIRDS_COOKED} ${SPECIES_COOKED}
 	@rm -f ${DB}
 	sqlite3 ${DB} < ${DB_MAKE}
+
+## data: rebuild data files
+data: ${BIRDS_COOKED} ${SPECIES_COOKED}
 
 ${BIRDS_COOKED}: ${BIRDS_RAW} ${BIRDS_CONVERT}
 	@mkdir -p cooked

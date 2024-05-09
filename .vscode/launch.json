@@ -1,6 +1,14 @@
 {
     "version": "0.2.0",
-    "configurations": [
+    "configurations": [    
+        {
+            "name": "graphing",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "graphing.py",
+            "console": "integratedTerminal",
+            "args": []
+        },
         {
             "name": "bootstrap",
             "type": "debugpy",

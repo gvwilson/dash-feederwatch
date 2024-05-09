@@ -2,10 +2,11 @@
 
 A [Dash][dash] visualization of [Feederwatch][feederwatch] data.
 
-- Create a Python virtual environment and run `pip install requirements.txt` to install required software.
-  - Please use Python 3.11.
-- Run `make` on its own in the root directory to see available commands.
-- Run `make data` to re-create the SQLite database `feederwatch.db`.
+1.  Create a Python virtual environment and run `pip install requirements.txt` to install required software.
+    -   Currently tested with Python 3.11.
+1.  Run `make get` to download raw data.
+1.  Run `make data` to create tidy CSV files.
+1.  Run `python graphing.py` to run application.
 
 ## Data
 

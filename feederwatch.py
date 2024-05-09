@@ -16,6 +16,8 @@ COMPONENT_GRAPH = 'graph'
 COMPONENT_TABLE = 'table'
 SELECT_REGION = 'region'
 SELECT_SPECIES = 'species'
+WIDTH_LABEL = 1
+WIDTH_DROPDOWN = 4
 
 
 def main(name):
