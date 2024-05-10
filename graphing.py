@@ -86,7 +86,7 @@ def create_callbacks(birds):
         temp = temp if species is None else temp[temp['species_id'] == species]
         temp = temp.groupby(['region', 'species_id']).agg(num = ('num', 'sum')).reset_index()
         fig = px.scatter(temp, x='region', y='species_id', size='num')
-        fig.update_layout(clickmode='select')
+        fig.update_layout(clickmode='event+select')
         return (
             fig,
             temp.to_dict('records'),

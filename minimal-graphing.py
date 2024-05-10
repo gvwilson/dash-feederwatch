@@ -32,7 +32,7 @@ def create_components(birds, species_labels, regions_labels):
     '''Create dashboard components (use component IDs as dict keys).'''
     temp = birds.groupby(['region', 'species_id']).agg(num = ('num', 'sum')).reset_index()
     fig = px.scatter(temp, x='region', y='species_id', size='num')
-    fig.update_layout(clickmode='select')
+    fig.update_layout(clickmode='event+select')
     return {
         DISPLAY_GRAPH: dcc.Graph(figure=fig, id=DISPLAY_GRAPH),
         DISPLAY_SELECTED: html.Pre(id=DISPLAY_SELECTED),
