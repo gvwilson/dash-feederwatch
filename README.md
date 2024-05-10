@@ -6,7 +6,11 @@ A [Dash][dash] visualization of [Feederwatch][feederwatch] data.
     -   Currently tested with Python 3.11.
 1.  Run `make get` to download raw data.
 1.  Run `make data` to create tidy CSV files.
-1.  Run `python graphing.py` to run application.
+1.  Run `python minimal-graphing.py clickData` (or `…hoverData` or `…selectedData`).
+
+`python minimal-graphing.py hoverData` does what I expect (shows the data being hovered).
+The `…clickData` and `…selectedData` variants don't:
+the callback appears to fire once with `None` as an argument no matter how I interact with the graph.
 
 ## Data
 

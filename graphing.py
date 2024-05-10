@@ -1,15 +1,14 @@
+'''Add click behavior to table-and-chart display.'''
+
 from dash import Dash, Input, Output, callback, dash_table, dcc, html, _dash_renderer
 import dash_mantine_components as dmc
 import pandas as pd
 import plotly.express as px
-import sys
+
+import util
 
 
 PAGE_SIZE = 15
-DATA_DIR = 'cooked'
-BIRDS_DATA = f'{DATA_DIR}/birds-ca.csv'
-SPECIES_DATA = f'{DATA_DIR}/species-ca.csv'
-REGIONS_DATA = f'{DATA_DIR}/regions-ca.csv'
 DISPLAY_GRAPH = 'graph'
 DISPLAY_TABLE = 'table'
 DISPLAY_SELECTED = 'selected'
@@ -21,9 +20,9 @@ WIDTH_DROPDOWN = 4
 
 def main(name):
     '''Main driver.'''
-    birds, species, regions = load_data()
-    species_labels = make_labels(species, 'species_id', 'en_us')
-    regions_labels = make_labels(regions, 'region', 'name')
+    birds, species, regions = util.load_data()
+    species_labels = util.make_labels(species, 'species_id', 'en_us')
+    regions_labels = util.make_labels(regions, 'region', 'name')
     components = create_components(birds, species_labels, regions_labels)
     app = do_layout(name, components)
     create_callbacks(birds)
@@ -43,7 +42,8 @@ def create_components(birds, species_labels, regions_labels):
 
 def do_layout(name, components):
     '''Lay out components using Mantine.'''
-    _dash_renderer._set_react_version('18.2.0') # https://github.com/snehilvj/dash-mantine-components/issues/240
+    # https://github.com/snehilvj/dash-mantine-components/issues/240
+    _dash_renderer._set_react_version('18.2.0')
     app = Dash(name)
     app.layout = dmc.MantineProvider(children=[
         # title
@@ -99,22 +99,6 @@ def create_callbacks(birds):
     )
     def update_selection(selectedData):
         return str(selectedData)
-
-
-def load_data():
-    '''Prepare application data.'''
-    birds = pd.read_csv(BIRDS_DATA)
-    species_seen = set(birds['species_id'])
-    species = pd.read_csv(SPECIES_DATA)
-    species = species[species['species_id'].isin(species_seen)]
-    regions = pd.read_csv(REGIONS_DATA)
-    return birds, species, regions
-
-
-def make_labels(df, key_col, value_col):
-    '''Make label dictionary for dropdown.'''
-    pairs = zip(df[key_col], df[value_col])
-    return dict(sorted(pairs))
 
 
 if __name__ == '__main__':

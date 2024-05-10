@@ -1,3 +1,5 @@
+'''Experiment with Bootstrap, Mantine, and DDK styling.'''
+
 from dash import Dash, Input, Output, callback, dash_table, dcc, html, _dash_renderer
 import dash_bootstrap_components as dbc
 import dash_design_kit as ddk
@@ -6,12 +8,10 @@ import pandas as pd
 import plotly.express as px
 import sys
 
+import util
+
 
 PAGE_SIZE = 15
-DATA_DIR = 'cooked'
-BIRDS_DATA = f'{DATA_DIR}/birds-ca.csv'
-SPECIES_DATA = f'{DATA_DIR}/species-ca.csv'
-REGIONS_DATA = f'{DATA_DIR}/regions-ca.csv'
 COMPONENT_GRAPH = 'graph'
 COMPONENT_TABLE = 'table'
 SELECT_REGION = 'region'
@@ -26,9 +26,9 @@ def main(name):
     layout = globals().get(f'layout_{styling}', None)
     assert layout, f'unknown layout {layout}'
 
-    birds, species, regions = load_data()
-    species_labels = make_labels(species, 'species_id', 'en_us')
-    regions_labels = make_labels(regions, 'region', 'name')
+    birds, species, regions = util.load_data()
+    species_labels = util.make_labels(species, 'species_id', 'en_us')
+    regions_labels = util.make_labels(regions, 'region', 'name')
     
     table_cls = ddk.DataTable if styling == 'ddk' else dash_table.DataTable
     components = create_components(birds, table_cls, species_labels, regions_labels)
