@@ -1,9 +1,12 @@
 dash
+dash-ag-grid
 dash-bootstrap-components
 dash-mantine-components
+dash[testing]
 pandas
 pandas-datareader
 psutil
+pytest
 ruff
 
 --extra-index-url=https://de5-staging.plotly.host/packages
