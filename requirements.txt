@@ -3,6 +3,7 @@ dash-ag-grid
 dash-bootstrap-components
 dash-mantine-components
 dash[testing]
+openpyxl
 pandas
 pandas-datareader
 psutil
